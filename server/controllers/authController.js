@@ -35,15 +35,13 @@ const register = async (req, res) => {
       maxAge: 3600000, // 1 hour
     });
 
-    console.log(transporter, "helo transtjshj");
-    console.log(process.env.SENDER_EMAIL, "process.env.SENDER_EMAIL");
 
     // Send welcome email (optional)
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: email,
       subject: "Welcome to Our Service",
-      text: `Hello ${name},\n\nThank you for registering with us! We're excited to have you on board.\n\nBest regards,\nYour Team`,
+      text: `Hello ${name},\n\nThank you for registering with us! We're excited to have you on board ${email}.\n\nBest regards,\nYour Team`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -82,7 +80,7 @@ const login = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.cookie(token, {
+    res.cookie("token",token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
@@ -110,6 +108,15 @@ const logout = (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+const sendVerifyOtp = async (req, res)=>{
+  try {
+    
+  } catch (error) {
+    res.json({success:false, message:error.message})
+  }
+}
 
 module.exports = {
   register,

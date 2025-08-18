@@ -1,11 +1,11 @@
+require("dotenv").config();
 const express = require("express");
-const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/mongodb");
 const authRouter = require("./routes/authRoutes");
 
-dotenv.config();
+// dotenv.config();
 connectDB();
 const app = express();
 
