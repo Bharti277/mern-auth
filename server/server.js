@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/mongodb");
 const authRouter = require("./routes/authRoutes");
+const userRouter = require("./routes/userRoutes");
 
 // dotenv.config();
 connectDB();
@@ -16,6 +17,7 @@ app.use(cors({ credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 // Api endpoints
 app.get("/", (req, res) => {
