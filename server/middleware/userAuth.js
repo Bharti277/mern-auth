@@ -5,11 +5,15 @@ const userAuth = (req, res, next) => {
   if (!token) {
     return res.status(401).json({ success: false, message: "Unauthorized" });
   }
+  console.log(req.body, "req.body in userAuth middleware");
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (decoded.id) {
-      req.body.userId = decoded.id;
+      if (!req.body) {
+        req.body = {};
+      }
+      req.body.userId = decoded?.id;
     } else {
       return res
         .status(401)
@@ -17,12 +21,10 @@ const userAuth = (req, res, next) => {
     }
     next();
   } catch (error) {
-    return res
-      .status(401)
-      .json({
-        success: false,
-        message: `${error.message} Failed Authentication`,
-      });
+    return res.status(401).json({
+      success: false,
+      message: `${error.message} Failed Authentication`,
+    });
   }
 };
 
