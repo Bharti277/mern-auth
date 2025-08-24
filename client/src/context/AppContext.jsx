@@ -1,11 +1,33 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const apiBaseUrl = "http://localhost:4000/api";
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  // Get user data if token exists
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     setIsLoggedIn(true);
+  //     getUserData();
+  //   }
+  // }, []);
+  const getUserData = async () => {
+    try {
+      const { data } = await axios.get(apiBaseUrl + "/user/data");
+      data.success
+        ? setUserData(data.userData)
+        : toast.error("Failed to fetch user data");
+    } catch (error) {
+      setUserData(null);
+      setIsLoggedIn(false);
+    }
+  };
 
   const value = {
     apiBaseUrl,
@@ -13,6 +35,7 @@ export const AppProvider = ({ children }) => {
     setIsLoggedIn,
     userData,
     setUserData,
+    getUserData,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
