@@ -10,16 +10,22 @@ export const AppProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
 
   // Get user data if token exists
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     setIsLoggedIn(true);
-  //     getUserData();
-  //   }
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+      getUserData();
+    }
+  }, []);
   const getUserData = async () => {
     try {
-      const { data } = await axios.get(apiBaseUrl + "/user/data");
+      const { data } = await axios.get(apiBaseUrl + "/user/data", {
+        withCredentials: true,
+        // headers: {
+        //   "Content-Type": "application/json",
+        //   // Authorization: `Bearer ${localStorage.getItem("token")}`,
+        // }
+      });
       data.success
         ? setUserData(data.userData)
         : toast.error("Failed to fetch user data");
