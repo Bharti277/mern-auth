@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 
 const Login = () => {
-  const { apiBaseUrl, setIsLoggedIn } = useContext(AppContext);
+  const { apiBaseUrl, setIsLoggedIn, getUserData } = useContext(AppContext);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -28,6 +28,7 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        credentials: "include",
       });
       const data = await res.json();
       console.log(data, "login response");
@@ -38,6 +39,7 @@ const Login = () => {
         return;
       }
       setLoading(false);
+      getUserData();
       navigate("/");
     } catch (error) {
       setError(error.message);

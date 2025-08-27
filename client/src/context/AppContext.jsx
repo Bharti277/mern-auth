@@ -10,41 +10,16 @@ export const AppProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
 
   // Get user data if token exists
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-      getUserData();
-    }
-  }, []);
 
   const getUserData = async () => {
     try {
-      const token = localStorage.getItem("token");
-      console.log(token, "token in getUserData");
-
-      if (!token) {
-        setIsLoggedIn(false);
-        setUserData(null);
-        return;
-      }
-
       const { data } = await axios.get(apiBaseUrl + "/user/data", {
         withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       if (data.success) {
         setUserData(data.userData);
         setIsLoggedIn(true);
-      } else {
-        localStorage.removeItem("token");
-        setIsLoggedIn(false);
-        setUserData(null);
-        toast.error("Failed to fetch user data");
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
