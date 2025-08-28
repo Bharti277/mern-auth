@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 const Home = () => {
+  const { userData } = useContext(AppContext);
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -9,7 +11,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-              Welcome to <span className="text-blue-600">Auth</span>App
+              Welcome{" "}
+              <span className="text-blue-600">
+                {userData ? userData.name : "Developer"}
+              </span>
             </h1>
             <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
               A secure and reliable authentication system built with MERN stack.

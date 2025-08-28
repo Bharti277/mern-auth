@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { apiBaseUrl, setIsLoggedIn, getUserData } = useContext(AppContext);
@@ -31,7 +32,6 @@ const Login = () => {
         credentials: "include",
       });
       const data = await res.json();
-      console.log(data, "login response");
 
       if (data.success === false) {
         setError(data.message);
@@ -40,8 +40,10 @@ const Login = () => {
       }
       setLoading(false);
       getUserData();
+      toast.success("Logged in successfully");
       navigate("/");
     } catch (error) {
+      toast.error("Error logging in");
       setError(error.message);
       setLoading(false);
     }

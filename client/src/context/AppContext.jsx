@@ -9,8 +9,47 @@ export const AppProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
 
-  // Get user data if token exists
+  // is authenticated state
 
+  const getAuthStatus = async () => {
+    try {
+      const { data } = await axios.get(apiBaseUrl + "/auth/is-auth", {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        setIsLoggedIn(true);
+        getUserData();
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      toast.error("Error checking auth status");
+    }
+  };
+
+  // Logout user
+  const logout = async () => {
+    try {
+      const { data } = await axios.post(
+        apiBaseUrl + "/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      if (data.success) {
+        setIsLoggedIn(false);
+        setUserData(null);
+        toast.success("Logged out successfully");
+      }
+    } catch (error) {
+      toast.error("Error logging out");
+    }
+  };
+  useEffect(() => {
+    getAuthStatus();
+  }, []);
+
+  // Get user data if token exists
   const getUserData = async () => {
     try {
       const { data } = await axios.get(apiBaseUrl + "/user/data", {
@@ -18,14 +57,14 @@ export const AppProvider = ({ children }) => {
       });
 
       if (data.success) {
-        setUserData(data.userData);
+        setUserData(data.user);
         setIsLoggedIn(true);
+      } else {
+        setUserData(null);
+        setIsLoggedIn(false);
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
-      localStorage.removeItem("token");
-      setUserData(null);
-      setIsLoggedIn(false);
+      toast.error("Session expired. Please log in again.");
     }
   };
 
@@ -36,6 +75,7 @@ export const AppProvider = ({ children }) => {
     userData,
     setUserData,
     getUserData,
+    logout,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
