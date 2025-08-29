@@ -21,16 +21,10 @@ const Home = () => {
             </p>
             <div className="mt-10 flex justify-center gap-4">
               <Link
-                to="/signup"
+                to="/"
                 className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
               >
                 Get Started
-              </Link>
-              <Link
-                to="/login"
-                className="px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
-              >
-                Sign In
               </Link>
             </div>
           </div>

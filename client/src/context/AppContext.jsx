@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
 
@@ -8,6 +9,20 @@ export const AppProvider = ({ children }) => {
   const apiBaseUrl = "http://localhost:4000/api";
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
+
+  const sendVerificationOtp = async () => {
+    try {
+      axios.defaults.withCredentials = true;
+      const { data } = await axios.post(apiBaseUrl + "/auth/send-verify-otp");
+      if (data.success) {
+        navigate("/email-verify");
+        toast.success(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   // is authenticated state
 
@@ -31,13 +46,12 @@ export const AppProvider = ({ children }) => {
   // Logout user
   const logout = async () => {
     try {
-      const { data } = await axios.post(
-        apiBaseUrl + "/auth/logout",
-        {},
-        { withCredentials: true }
-      );
+      const { data } = await axios.post(apiBaseUrl + "/auth/logout", {
+        withCredentials: true,
+      });
       if (data.success) {
         setIsLoggedIn(false);
+        navigate("/");
         setUserData(null);
         toast.success("Logged out successfully");
       }
@@ -76,6 +90,7 @@ export const AppProvider = ({ children }) => {
     setUserData,
     getUserData,
     logout,
+    sendVerificationOtp,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

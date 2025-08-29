@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
-  const { userData, isLoggedIn, logout } = useContext(AppContext);
+  const { userData, isLoggedIn, logout, sendVerificationOtp } =
+    useContext(AppContext);
 
   return (
     <header className="bg-white shadow-md">
@@ -40,6 +41,15 @@ const Navbar = () => {
           {isLoggedIn && userData ? (
             <div className="flex items-center space-x-4">
               <span className="text-gray-800">Hello, {userData.name}</span>
+              {isLoggedIn && userData && !userData.isAccountVerified && (
+                <Link
+                  onClick={sendVerificationOtp}
+                  to="/email-verify"
+                  className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
+                >
+                  Verify Email
+                </Link>
+              )}
               <button
                 onClick={logout}
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
