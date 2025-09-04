@@ -71,7 +71,7 @@ const EmailVerify = () => {
               />
             ))}
         </div>
-        <button>Verify Email</button>
+        <button className="w-full">Verify Email</button>
       </form>
     </div>
   );

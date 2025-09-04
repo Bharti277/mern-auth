@@ -7,6 +7,7 @@ const ResetPassword = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <form>
         <input
+          className="border p-2 mb-4"
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
