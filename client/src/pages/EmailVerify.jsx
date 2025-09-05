@@ -29,11 +29,14 @@ const EmailVerify = () => {
     }
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
       const otp = inputRefs.current.map((input) => input.value).join("");
-      const { data } = axios.post(apiBaseUrl + "/auth/verify-account", { otp });
+      const { data } = await axios.post(apiBaseUrl + "/auth/verify-account", {
+        otp,
+      });
+
       if (data.success) {
         toast.success(data.message);
         getUserData();

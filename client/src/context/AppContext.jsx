@@ -20,6 +20,8 @@ export const AppProvider = ({ children }) => {
         toast.success(data.message);
       }
     } catch (error) {
+      console.log(error, "error in sending otp");
+
       toast.error(error.message);
     }
   };
@@ -39,7 +41,7 @@ export const AppProvider = ({ children }) => {
         setIsLoggedIn(false);
       }
     } catch (error) {
-      toast.error("Error checking auth status");
+      toast.error("checking auth status");
     }
   };
 
